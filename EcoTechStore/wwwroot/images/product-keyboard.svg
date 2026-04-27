@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" width="400" height="200">
+  <rect width="120" height="80" rx="6" fill="#f1f8e9" />
+  <rect x="10" y="20" width="100" height="20" rx="3" fill="#dcedc8" />
+  <text x="10" y="46" font-size="8" fill="#33691e">Teclado BambooTech Wireless</text>
+</svg>

@@ -1,0 +1,102 @@
+@page
+@model EcoTechStore.Pages.ProductsModel
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+<partial name="_Hero" model='@(new { Title = "Produtos", Subtitle = "Explore nossa seleção de produtos sustentáveis.", PrimaryText = "Voltar para Home", PrimaryPage = "/Index", SecondaryText = "Ver Carrinho", SecondaryPage = "/Cart", Theme = "products" })' />
+
+<div class="container">
+    <div class="row">
+        <!-- Sidebar: filtros e categorias -->
+        <aside class="col-md-3">
+            <div class="filter-section mb-4 p-3 card-eco">
+                <h5 class="mb-3">Tecnologia</h5>
+                <hr />
+                <div class="category-columns mb-3">
+                    <div>
+                        <strong>Celulares e Telefones</strong>
+                        <ul class="list-unstyled small">
+                            <li>Acessórios para Celulares</li>
+                            <li>Peças para Celular</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>Câmeras e Acessórios</strong>
+                        <ul class="list-unstyled small">
+                            <li>Acessórios para Câmeras</li>
+                            <li>Câmeras</li>
+                            <li>Filmadoras</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h6 class="mt-3">Filtrar por</h6>
+                <form method="get">
+                    <div class="mb-2">
+                        <label class="form-label small">Categoria</label>
+                        <select name="category" class="form-select form-select-sm">
+                            <option value="">Todos</option>
+                            <option>Celulares</option>
+                            <option>Computadores</option>
+                            <option>Câmeras</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Preço (até)</label>
+                        <input type="range" name="maxPrice" class="form-range" min="0" max="10000" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Marca</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="EcoBrand" id="m1"> <label class="form-check-label small" for="m1">EcoBrand</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="GreenTech" id="m2"> <label class="form-check-label small" for="m2">GreenTech</label>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-eco btn-sm">Aplicar filtros</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Lista de produtos -->
+        <section class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div><strong>Mostrando @Model.Products.Count produtos</strong></div>
+                <div>
+                    <label class="me-2 small">Ordenar por</label>
+                    <select class="form-select form-select-sm d-inline-block" style="width:auto;">
+                        <option>Relevância</option>
+                        <option>Preço: menor</option>
+                        <option>Preço: maior</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach (var item in Model.Products)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Title</h5>
+                                <p class="card-text">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <form method="post" asp-page-handler="Add">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-sm btn-primary">Adicionar ao carrinho</button>
+                                    </form>
+                                    <small class="text-muted">@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+</div>

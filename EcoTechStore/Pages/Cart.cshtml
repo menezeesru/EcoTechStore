@@ -1,0 +1,53 @@
+@page
+@model EcoTechStore.Pages.CartModel
+@{
+    ViewData["Title"] = "Carrinho";
+}
+
+<partial name="_Hero" model='@(new { Title = "Carrinho", Subtitle = "Veja os itens que você adicionou. Pronto para finalizar a compra?", PrimaryText = "Continuar Comprando", PrimaryPage = "/Products", SecondaryText = "Voltar para Home", SecondaryPage = "/Index", Theme = "cart" })' />
+
+<div class="container">
+    @if (!Model.Items.Any())
+    {
+        <div class="alert alert-info">Seu carrinho está vazio. Visite a <a asp-page="/Products">página de produtos</a> para adicionar itens.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var it in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="@it.Product.ImageUrl" alt="@it.Product.Title" style="width:72px;height:auto;" class="me-3" />
+                                    <div>
+                                        <div class="fw-bold">@it.Product.Title</div>
+                                        <div class="small text-muted">@it.Product.Description</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@it.Quantity</td>
+                            <td>@it.Product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</td>
+                            <td>
+                                <form method="post" asp-page-handler="Remove">
+                                    <input type="hidden" name="id" value="@it.Product.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Remover</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
