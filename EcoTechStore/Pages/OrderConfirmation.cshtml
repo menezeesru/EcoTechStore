@@ -1,0 +1,43 @@
+@page "{method?}"
+@model EcoTechStore.Pages.OrderConfirmationModel
+@{
+    ViewData["Title"] = "Compra Confirmada";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="text-center">
+                <div style="font-size: 64px; color: #28a745; margin-bottom: 20px;">
+                    ✓
+                </div>
+                <h1 class="text-success mb-4">Compra Confirmada!</h1>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="lead mb-3">Obrigado pela sua compra!</p>
+
+                        <div class="text-start">
+                            <p><strong>Número do Pedido:</strong> #@Model.OrderNumber</p>
+                            <p><strong>Forma de Pagamento:</strong> @Model.PaymentMethodName</p>
+                            <p><strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            <small>
+                                Um email de confirmação foi enviado para seu endereço de e-mail registrado.
+                                <br />
+                                Você pode acompanhar seu pedido na sua conta.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a asp-page="/Products" class="btn btn-primary btn-lg">Continuar Comprando</a>
+                    <a asp-page="/Index" class="btn btn-secondary">Voltar para Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

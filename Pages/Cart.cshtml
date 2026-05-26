@@ -1,0 +1,11 @@
+@page
+@model EcoTechStore.Pages.CartModel
+@{
+    ViewData["Title"] = "Carrinho";
+}
+
+<partial name="_Hero" model='@(new { Title = "Carrinho", Subtitle = "Veja os itens que você adicionou. Pronto para finalizar a compra?", PrimaryText = "Continuar Comprando", PrimaryPage = "/Products", SecondaryText = "Voltar para Home", SecondaryPage = "/Index", Theme = "cart" })' />
+
+<div class="container">
+    <div class="alert alert-info">Seu carrinho está vazio. Visite a <a asp-page="/Products">página de produtos</a> para adicionar itens.</div>
+</div>

@@ -1,0 +1,76 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Login - Admin";
+}
+
+<div class="container" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div class="row w-100">
+        <div class="col-md-4 mx-auto">
+            <div class="card shadow-lg" style="border: 2px solid #2e7d32; border-radius: 15px;">
+                <div class="card-body p-5">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <img src="~/images/computer.svg" alt="EcoTechStore" style="height: 50px; width: auto; margin-bottom: 15px;">
+                        <h3 style="color: #2e7d32; font-weight: 700;">EcoTechStore Admin</h3>
+                        <p class="text-muted">Acesso Restrito</p>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Erro!</strong> @Model.ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div class="mb-4">
+                            <label for="username" class="form-label" style="color: #2e7d32; font-weight: 600;">Usuário</label>
+                            <input type="text" class="form-control form-control-lg" id="username" name="username" 
+                                   placeholder="Digite seu usuário" required 
+                                   style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label" style="color: #2e7d32; font-weight: 600;">Senha</label>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" 
+                                   placeholder="Digite sua senha" required
+                                   style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+
+                        <button type="submit" class="btn btn-lg w-100" 
+                                style="background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%); color: white; font-weight: 600; border: none; border-radius: 8px;">
+                            Entrar
+                        </button>
+                    </form>
+
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center;">
+                        <p style="color: #999; font-size: 0.9rem; margin-bottom: 10px;">Credenciais de teste:</p>
+                        <p style="color: #666; font-size: 0.85rem;">
+                            <strong>Usuário:</strong> adm<br>
+                            <strong>Senha:</strong> 123
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <a asp-page="/Index" style="color: #2e7d32; text-decoration: none; font-weight: 500;">
+                    ← Voltar para Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #2e7d32 !important;
+        box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25) !important;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+    }
+</style>

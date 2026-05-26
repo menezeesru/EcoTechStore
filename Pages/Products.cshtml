@@ -1,0 +1,53 @@
+@page
+@model EcoTechStore.Pages.ProductsModel
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+<partial name="_Hero" model='@(new { Title = "Produtos", Subtitle = "Explore nossa seleção de produtos sustentáveis.", PrimaryText = "Voltar para Home", PrimaryPage = "/Index", SecondaryText = "Ver Carrinho", SecondaryPage = "/Cart", Theme = "products" })' />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="https://via.placeholder.com/400x200?text=Produto+1" class="card-img-top" alt="Produto 1">
+                <div class="card-body">
+                    <h5 class="card-title">Produto 1</h5>
+                    <p class="card-text">Descrição curta do produto.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a class="btn btn-sm btn-primary" asp-page="/Cart">Adicionar ao carrinho</a>
+                        <small class="text-muted">R$99,00</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="https://via.placeholder.com/400x200?text=Produto+2" class="card-img-top" alt="Produto 2">
+                <div class="card-body">
+                    <h5 class="card-title">Produto 2</h5>
+                    <p class="card-text">Descrição curta do produto.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a class="btn btn-sm btn-primary" asp-page="/Cart">Adicionar ao carrinho</a>
+                        <small class="text-muted">R$149,00</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="https://via.placeholder.com/400x200?text=Produto+3" class="card-img-top" alt="Produto 3">
+                <div class="card-body">
+                    <h5 class="card-title">Produto 3</h5>
+                    <p class="card-text">Descrição curta do produto.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a class="btn btn-sm btn-primary" asp-page="/Cart">Adicionar ao carrinho</a>
+                        <small class="text-muted">R$199,00</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

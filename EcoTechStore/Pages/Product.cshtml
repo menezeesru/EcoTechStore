@@ -1,0 +1,200 @@
+@page "{id:int}"
+@model EcoTechStore.Pages.ProductModel
+@{
+    ViewData["Title"] = Model.Product?.Title ?? "Produto";
+}
+<link rel="stylesheet" href="~/css/product.css" />
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb-nav">
+    <div class="container">
+        <a href="/" class="breadcrumb-link">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="/Products" class="breadcrumb-link">Produtos</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">@Model.Product?.Title</span>
+    </div>
+</nav>
+
+<div class="product-container">
+    <div class="product-page">
+        <!-- Galeria -->
+        <div class="product-gallery-section">
+            <div class="gallery-main">
+                <img id="mainImg" src="@(Url.Content(Model.Product?.ImageUrl ?? "~/images/placeholder.png"))" alt="@Model.Product?.Title" class="main-product-image" />
+            </div>
+
+            <div class="gallery-info">
+                <div class="category-badge">
+                    <span>@Model.Product?.Category</span>
+                </div>
+                <div class="eco-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8" />
+                        <path d="M12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4" />
+                    </svg>
+                    <span>100% Sustentável</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informações do Produto -->
+        <div class="product-info-section">
+            <div class="product-header">
+                <h1 class="product-title">@Model.Product?.Title</h1>
+                <p class="product-category-text">Categoria: <strong>@Model.Product?.Category</strong></p>
+            </div>
+
+            <div class="product-description-main">
+                <p class="description-text">@Model.Product?.LongDescription</p>
+            </div>
+
+            <!-- Compra -->
+            <div class="purchase-section">
+                <div class="price-container">
+                    <span class="price-label">Preço</span>
+                    <span class="price-value">@(Model.Product != null ? Model.Product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")) : "-")</span>
+                </div>
+
+                <div class="stock-status">
+                    <span class="stock-indicator">✓</span>
+                    <span class="stock-text">Em estoque</span>
+                </div>
+
+                <form method="post" asp-page-handler="Add" class="purchase-form">
+                    <input type="hidden" name="productId" value="@Model.Product.Id" />
+
+                    <div class="quantity-selector">
+                        <label for="quantity">Quantidade:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="100" class="qty-input" />
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary-eco">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                <path d="M9 2L6.46 6H2v2h2.08L5 19c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2l1.92-11H22v-2h-4.46L15 2M9 7h6l-1.5 11H10.5M9 4h6M7 7h1m8 0h1" />
+                            </svg>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </form>
+
+                <div class="trust-badges">
+                    <div class="badge-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                        <span>Seguro</span>
+                    </div>
+                    <div class="badge-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                            <path d="M12 1l9 5v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V6l9-5" />
+                        </svg>
+                        <span>Frete Grátis</span>
+                    </div>
+                    <div class="badge-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        </svg>
+                        <span>Devolvível</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalhes completos -->
+    <div class="product-details-section">
+        <div class="details-container">
+            <div class="details-column">
+                <section class="detail-block">
+                    <div class="section-header">
+                        <h2>Especificações Técnicas</h2>
+                    </div>
+                    <div class="specs-list">
+                        @if (!string.IsNullOrEmpty(Model.Product?.Specifications))
+                        {
+                            @foreach (var spec in Model.Product.Specifications.Split('\n'))
+                            {
+                                if (!string.IsNullOrWhiteSpace(spec))
+                                {
+                                    <div class="spec-item">
+                                        <span class="spec-label">@spec</span>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </section>
+            </div>
+
+            <div class="details-column">
+                <section class="detail-block">
+                    <div class="section-header">
+                        <h2>Por que escolher?</h2>
+                    </div>
+                    <ul class="features-list">
+                        @if (!string.IsNullOrEmpty(Model.Product?.Highlights))
+                        {
+                            @foreach (var highlight in Model.Product.Highlights.Split('\n'))
+                            {
+                                if (!string.IsNullOrWhiteSpace(highlight))
+                                {
+                                    <li>
+                                        <span class="feature-text">@highlight</span>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setMain(src) {
+        var img = document.getElementById('mainImg');
+        if (!img) return;
+        img.src = src;
+    }
+
+    // Carrossel de imagens do Smartphone
+    let currentImageIndex = 0;
+    const carouselImages = document.querySelectorAll('.carousel-image');
+    const dots = document.querySelectorAll('.dot');
+
+    function showImage(index) {
+        if (!carouselImages.length) return;
+
+        // Remove active de todas as imagens
+        carouselImages.forEach(img => img.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        // Adiciona active ao índice correto
+        currentImageIndex = (index + carouselImages.length) % carouselImages.length;
+        carouselImages[currentImageIndex].classList.add('active');
+        dots[currentImageIndex].classList.add('active');
+    }
+
+    function nextImage() {
+        showImage(currentImageIndex + 1);
+    }
+
+    function prevImage() {
+        showImage(currentImageIndex - 1);
+    }
+
+    function goToImage(index) {
+        showImage(index);
+    }
+
+    // Auto-play do carrossel (opcional)
+    setInterval(() => {
+        const carousel = document.querySelector('.smartphone-gallery');
+        if (carousel) {
+            nextImage();
+        }
+    }, 5000);
+</script>

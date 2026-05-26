@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" width="400" height="200">
+  <rect width="120" height="80" rx="6" fill="#eceff1" />
+  <ellipse cx="60" cy="40" rx="28" ry="18" fill="#cfd8dc" />
+  <text x="10" y="46" font-size="8" fill="#37474f">Mouse EcoClick Recycled</text>
+</svg>

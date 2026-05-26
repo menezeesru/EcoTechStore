@@ -1,0 +1,85 @@
+@page
+@model EcoTechStore.Pages.Admin.AdminProductsModel
+@{
+    ViewData["Title"] = "Gerenciar Produtos";
+}
+
+<div class="container-fluid mt-5 mb-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <div>
+                <h1 style="color: #2e7d32; font-weight: 700; margin: 0;">Gerenciar Produtos</h1>
+                <p style="color: #999; margin: 5px 0 0 0;">Total de produtos: <strong>@Model.Products.Count</strong></p>
+            </div>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-page="ProductForm" class="btn btn-lg" style="background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%); color: white; border: none; font-weight: 600; border-radius: 8px;">
+                <i class="bi bi-plus-circle"></i> Novo Produto
+            </a>
+            <a href="/Admin/Logout" class="btn btn-lg btn-outline-danger" style="border-radius: 8px; font-weight: 600; margin-left: 10px;">
+                Sair
+            </a>
+        </div>
+    </div>
+
+    @if (!Model.Products.Any())
+    {
+        <div class="alert alert-info alert-dismissible fade show" role="alert" style="border-radius: 8px; border: none; background-color: #e3f2fd;">
+            <strong>Nenhum produto cadastrado.</strong> Clique no botão "Novo Produto" para começar.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in Model.Products)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm" style="border: none; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <div class="card-body" style="padding: 20px;">
+                            <h5 class="card-title" style="color: #2e7d32; font-weight: 700; margin-bottom: 10px;">@product.Title</h5>
+
+                            <div style="margin-bottom: 15px;">
+                                <p style="color: #666; font-size: 0.9rem; margin-bottom: 5px;"><strong>Descrição:</strong></p>
+                                <p style="color: #999; margin: 0; font-size: 0.85rem;">@product.Description</p>
+                            </div>
+
+                            <div style="margin-bottom: 15px;">
+                                <p style="color: #666; font-size: 0.9rem; margin-bottom: 5px;"><strong>Categoria:</strong> <span style="color: #2e7d32; font-weight: 600;">@product.Category</span></p>
+                                <p style="color: #666; font-size: 0.9rem; margin-bottom: 5px;"><strong>Preço:</strong> <span style="color: #43a047; font-weight: 700; font-size: 1.1rem;">@product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</span></p>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <a asp-page="ProductForm" asp-route-id="@product.Id" class="btn btn-sm" style="background-color: #2196F3; color: white; border: none; border-radius: 6px; font-weight: 600; width: 100%;">✏️ Editar Tudo</a>
+                                <form method="post" asp-page-handler="Delete" style="display: block; width: 100%;">
+                                    <input type="hidden" name="id" value="@product.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 6px; font-weight: 600; width: 100%;" onclick="return confirm('Tem certeza que deseja deletar este produto?')">🗑️ Deletar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 8px 24px rgba(46, 125, 50, 0.15) !important;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #2e7d32 !important;
+        box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25) !important;
+    }
+</style>
+
+
