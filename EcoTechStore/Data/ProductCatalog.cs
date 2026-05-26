@@ -11,7 +11,7 @@ namespace EcoTechStore.Data
             new Product 
             { 
                 Id = 1, 
-                Title = "Notebook EcoGreen X15 5", 
+                Title = "Notebook EcoGreen X15", 
                 Description = "Notebook com materiais reciclados, baixo consumo energético.",
                 LongDescription = "O Notebook EcoGreen X15 é a solução perfeita para profissionais que buscam performance aliada à sustentabilidade. Equipado com processador de última geração e materiais reciclados, oferece o melhor custo-benefício.",
                 Specifications = "Processador: AMD Ryzen 7\nMemória: 16GB DDR5\nArmazenamento: 512GB SSD\nTela: 15.6\" Full HD\nBateria: Longa duração\nSistema: Windows 11",
