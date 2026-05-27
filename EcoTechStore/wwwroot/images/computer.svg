@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Computer icon">
-  <rect x="6" y="10" width="52" height="34" rx="3" ry="3" fill="#2e7d32" />
-  <rect x="10" y="14" width="44" height="26" rx="2" ry="2" fill="#fff" />
-  <rect x="22" y="48" width="20" height="4" fill="#4caf50" rx="1" ry="1" />
-  <rect x="8" y="54" width="48" height="2" fill="#8bc34a" />
-  <path d="M18 20h28v6H18z" fill="#e8f5e9" opacity="0.5" />
-</svg>

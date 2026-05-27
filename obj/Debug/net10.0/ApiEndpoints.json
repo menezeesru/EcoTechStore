@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "EcoTechStore.Controllers.CartController",
+    "Method": "GetCartCount",
+    "RelativePath": "api/Cart/count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

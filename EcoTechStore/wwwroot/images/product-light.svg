@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" width="400" height="200">
-  <rect width="120" height="80" rx="6" fill="#fffde7" />
-  <path d="M60 14c-8 0-14 6-14 14 0 6 4 10 6 12v8h16v-8c2-2 6-6 6-12 0-8-6-14-14-14z" fill="#fff59d" />
-  <text x="10" y="66" font-size="8" fill="#f57f17">Lâmpada Inteligente EcoLight Wi-Fi</text>
-</svg>

@@ -4,8 +4,231 @@
     ViewData["Title"] = "Carrinho";
 }
 
-<partial name="_Hero" model='@(new { Title = "Carrinho", Subtitle = "Veja os itens que você adicionou. Pronto para finalizar a compra?", PrimaryText = "Continuar Comprando", PrimaryPage = "/Products", SecondaryText = "Voltar para Home", SecondaryPage = "/Index", Theme = "cart" })' />
+<link rel="stylesheet" href="~/css/cart.css" />
 
-<div class="container">
-    <div class="alert alert-info">Seu carrinho está vazio. Visite a <a asp-page="/Products">página de produtos</a> para adicionar itens.</div>
+<partial name="_Hero" model='@(new { Title = " Seu Carrinho", Subtitle = "Revise seus produtos e finalize sua compra", PrimaryText = "Continuar Comprando", PrimaryPage = "/Products", SecondaryText = "Voltar para Home", SecondaryPage = "/Index", Theme = "cart" })' />
+
+<div class="cart-container">
+    @if (!Model.Items.Any())
+    {
+        <div class="empty-cart-section">
+            <h2>Seu carrinho está vazio!</h2>
+            <p>Que tal explorar nossos produtos sustentáveis?</p>
+            <a asp-page="/Products" class="btn btn-primary-eco btn-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Explorar Produtos
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="cart-content">
+            <!-- LADO ESQUERDO: ITENS DO CARRINHO -->
+            <div class="cart-items-section">
+                <div class="section-header">
+                    <h2>Itens do Carrinho</h2>
+                    <span class="items-count">@Model.Items.Count item@(Model.Items.Count != 1 ? "ns" : "")</span>
+                </div>
+
+                <form method="post" asp-page-handler="Update" id="updateForm" class="items-form">
+                    @Html.AntiForgeryToken()
+                    <div class="cart-items-list">
+                        @for (int i = 0; i < Model.Items.Count; i++)
+                        {
+                            var item = Model.Items[i];
+                            var itemTotal = item.Product.Price * item.Quantity;
+
+                            <div class="cart-item-card">
+                                <div class="item-image">
+                                    <img src="@Url.Content(item.Product.ImageUrl)" alt="@item.Product.Title" />
+                                </div>
+
+                                <div class="item-details">
+                                    <h3 class="item-title">@item.Product.Title</h3>
+                                    <p class="item-category">@item.Product.Category</p>
+                                    <p class="item-description">@item.Product.Description</p>
+
+                                    <div class="item-price-info">
+                                        <span class="unit-price">
+                                            @item.Product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
+                                        </span>
+                                        <span class="price-separator">×</span>
+                                        <div class="quantity-box">
+                                            <input type="hidden" name="items[@i].productId" value="@item.Product.Id" />
+                                            <input type="number" name="items[@i].quantity" value="@item.Quantity" min="1" max="100" class="qty-input" data-form="updateForm" />
+                                        </div>
+                                        <span class="equals">=</span>
+                                        <span class="item-subtotal">
+                                            @itemTotal.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="item-actions">
+                                    <button type="button" class="btn-remove" title="Remover produto" data-product-id="@item.Product.Id">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- RESUMO -->
+                    <div class="cart-summary-mobile">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>@Model.Items.Sum(x => x.Product.Price * x.Quantity).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</span>
+                        </div>
+                        <div class="summary-row discount">
+                            <span>Desconto (10%)</span>
+                            <span>-@((Model.Items.Sum(x => x.Product.Price * x.Quantity) * 0.1m).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")))</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span>@Model.Total.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons-mobile">
+                        <button type="submit" class="btn btn-update">Atualizar</button>
+                        <a asp-page="/Checkout" class="btn btn-checkout">Finalizar Compra</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- LADO DIREITO: RESUMO DO CARRINHO -->
+            <aside class="cart-summary-section">
+                <div class="summary-card">
+                    <h3>Resumo do Pedido</h3>
+
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <span class="label">Subtotal</span>
+                            <span class="value">@Model.Items.Sum(x => x.Product.Price * x.Quantity).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</span>
+                        </div>
+
+                        <div class="promo-section">
+                            <div class="promo-badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8m3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5m-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11m3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path>
+                                </svg>
+                                Ganhe 10% de desconto
+                            </div>
+                        </div>
+
+                        <div class="summary-item discount">
+                            <span class="label">Desconto Ecotech</span>
+                            <span class="value">-@((Model.Items.Sum(x => x.Product.Price * x.Quantity) * 0.1m).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")))</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="summary-item total">
+                            <span class="label">Total</span>
+                            <span class="value">@Model.Total.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</span>
+                        </div>
+                    </div>
+
+                    <a asp-page="/Checkout" class="btn btn-primary-eco btn-checkout-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Finalizar Compra
+                    </a>
+                </div>
+
+                <div class="trust-section">
+                    <h4>Segurança Garantida</h4>
+                    <div class="trust-items">
+                        <div class="trust-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span>Pagamento seguro</span>
+                        </div>
+                        <div class="trust-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 4.5a10 10 0 0 1-18.8 4.2"></path>
+                            </svg>
+                            <span>Trocas e devoluções</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    }
 </div>
+
+<script>
+    // Handler para remover produtos
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeButtons = document.querySelectorAll('.btn-remove');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const productId = this.getAttribute('data-product-id');
+                if (!productId) return;
+
+                // Criar um formulário temporário para enviar a requisição de remoção
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.style.display = 'none';
+
+                // Adicionar o ID do produto
+                const idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                idInput.value = productId;
+                form.appendChild(idInput);
+
+                // Adicionar o token CSRF se existir
+                const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                if (tokenInput) {
+                    const tokenClone = tokenInput.cloneNode(true);
+                    form.appendChild(tokenClone);
+                }
+
+                // Definir a ação para o handler Remove
+                form.action = '?handler=Remove';
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+        });
+    });
+
+    // Prevenir que o Enter no input de quantidade dispare o botão remover
+    document.querySelectorAll('.qty-input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const form = document.getElementById('updateForm');
+                if (form) {
+                    form.submit();
+                }
+            }
+        });
+    });
+
+    // Prevenir submissão acidental do formulário ao pressionar Enter
+    document.addEventListener('DOMContentLoaded', function() {
+        const updateForm = document.getElementById('updateForm');
+        if (updateForm) {
+            updateForm.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && e.target.classList.contains('qty-input')) {
+                    e.preventDefault();
+                    this.submit();
+                }
+            });
+        }
+    });
+</script>
